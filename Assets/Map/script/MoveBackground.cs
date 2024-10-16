@@ -8,18 +8,14 @@ public class MoveBackground : MonoBehaviour {
 	private float x;
 	public float destination;
 	public float original;
-
-	// Use this for initialization
-	void Start () {
-	}
-	
+		
 	// Update is called once per frame
-	void Update () {
+	void Update(){
 		x = transform.position.x;
 		x += speed * Time.deltaTime;
 		transform.position = new Vector3 (x, transform.position.y, transform.position.z);
 
-		if (x <= destination){	
+		if (x <= destination){
 			x = original;
 			transform.position = new Vector3 (x, transform.position.y, transform.position.z);
 		}
