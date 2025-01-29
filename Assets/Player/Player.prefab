@@ -126,6 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67043355ccee6aa41bc759ceaf63c22b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 4
+  jumpingPower: 8
   rb: {fileID: 4892680580516160969}
   groundCheck: {fileID: 1912664355706883498}
   groundLayer:
@@ -165,4 +167,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.065

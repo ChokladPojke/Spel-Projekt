@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
     public float speed = 4f;
-    private float jumpingPower = 8f;
+    public float jumpingPower = 8f;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -21,9 +21,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 1.5f);
         }
-    }
+    }   
 
     private void FixedUpdate()
     {
