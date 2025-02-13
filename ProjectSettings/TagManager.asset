@@ -54,31 +54,19 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Collision
-    uniqueID: 728119443
-    locked: 0
-  - name: New Layer 6
-    uniqueID: 2656254135
+    uniqueID: 701984079
     locked: 0
   - name: Background
     uniqueID: 1786644091
     locked: 0
-  - name: Pits
-    uniqueID: 1708555451
-    locked: 0
-  - name: Grass & small stone
-    uniqueID: 4290001429
-    locked: 0
-  - name: Decorations
+  - name: Bushes
     uniqueID: 1383289597
     locked: 0
-  - name: Walls
-    uniqueID: 1312893215
-    locked: 0
-  - name: BIG Stones
+  - name: Trees
     uniqueID: 26456649
     locked: 0
-  - name: Items
-    uniqueID: 1378667617
+  - name: Ground/walls
+    uniqueID: 1312893215
     locked: 0
   - name: Enemy
     uniqueID: 2750739507
