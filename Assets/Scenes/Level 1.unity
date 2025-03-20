@@ -6758,7 +6758,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -8251,34 +8251,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_Time
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_Emitting
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_PreviewTimeScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_ApplyActiveColorSpace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281211481381618934, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.25
-      objectReference: {fileID: 0}
     - target: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8320,9 +8292,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
       propertyPath: boxCollider
       value: 
       objectReference: {fileID: 1845899950}
+    - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: jumpingPower
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
       propertyPath: wallLayer.m_Bits
       value: 64

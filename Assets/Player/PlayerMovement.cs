@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     public float speed = 8f;
     public float jumpingPower = 16f;
+    private bool canDoubleJump = false;
     private bool isFacingRight = true;
 
     private bool canDash = true;
@@ -16,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
     public float dashingCooldown = 1f;
 
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private BoxCollider2D groundCheckCollider; // Use BoxCollider2D instead of groundCheck
+    [SerializeField] private BoxCollider2D groundCheckCollider;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private BoxCollider2D wallCheckCollider; // Use BoxCollider2D instead of wallCheck
+    [SerializeField] private BoxCollider2D wallCheckCollider;
     [SerializeField] private TrailRenderer tr;
 
     private void Update()
@@ -30,29 +31,40 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        // Grounded Jump
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
-
-        if (Input.GetButtonDown("Jump") && CanWallJump())
+        // Wall Jump
+        else if (Input.GetButtonDown("Jump") && CanWallJump())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
+        // Double Jump (Only allowed if not grounded)
+        else if (Input.GetButtonDown("Jump") && !IsGrounded() && canDoubleJump)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            canDoubleJump = false; // Consume double jump
+        }
 
+        // Reduce the jump height when the jump button is released
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
+        // Dash
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !hasDashed)
         {
             StartCoroutine(Dash());
         }
 
+        // Reset abilities when touching the ground
         if (IsGrounded())
         {
-            hasDashed = false; 
+            hasDashed = false;
+            canDoubleJump = true; // Reset double jump when landing
         }
 
         Flip();
