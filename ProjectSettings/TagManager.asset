@@ -23,7 +23,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Collision
+  - groundLayer
   - Pits
   - Walls
   - BIG Stones
@@ -53,38 +53,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Collision
-    uniqueID: 728119443
+  - name: Background 1
+    uniqueID: 247967405
     locked: 0
-  - name: New Layer 6
-    uniqueID: 2656254135
-    locked: 0
-  - name: Background
-    uniqueID: 1786644091
-    locked: 0
-  - name: Pits
-    uniqueID: 1708555451
-    locked: 0
-  - name: Grass & small stone
-    uniqueID: 4290001429
-    locked: 0
-  - name: Decorations
-    uniqueID: 1383289597
-    locked: 0
-  - name: Walls
-    uniqueID: 1312893215
-    locked: 0
-  - name: BIG Stones
-    uniqueID: 26456649
-    locked: 0
-  - name: Items
-    uniqueID: 1378667617
-    locked: 0
-  - name: Enemy
-    uniqueID: 2750739507
+  - name: Background 2
+    uniqueID: 330898789
     locked: 0
   - name: Player
     uniqueID: 483931747
+    locked: 0
+  - name: Ground/walls
+    uniqueID: 1312893215
+    locked: 0
+  - name: Foreground 1
+    uniqueID: 26456649
+    locked: 0
+  - name: Foreground 2
+    uniqueID: 1383289597
     locked: 0
   - name: Canvas
     uniqueID: 2685568627
