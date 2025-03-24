@@ -6325,7 +6325,7 @@ CompositeCollider2D:
   m_GameObject: {fileID: 458472945}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 11ad81e7b4eea3c44b1b8c1c1842c0b2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -8243,13 +8243,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -3938467618758201996, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: m_Constraints
-      value: 4
+    - target: {fileID: 1110844443064399394, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.1992188
+      objectReference: {fileID: 0}
+    - target: {fileID: 1110844443064399394, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.1992188
       objectReference: {fileID: 0}
     - target: {fileID: 1689594752083418695, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705154810904354003, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.1992188
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705154810904354003, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.1992188
+      objectReference: {fileID: 0}
+    - target: {fileID: 4224410107797756362, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.1992188
+      objectReference: {fileID: 0}
+    - target: {fileID: 4224410107797756362, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.1992188
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8291,22 +8323,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: speed
-      value: 10
+    - target: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: boxCollider
+    - target: {fileID: 7875939860460058523, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1845899950}
-    - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: jumpingPower
-      value: 12
+      objectReference: {fileID: -1623849784, guid: 8db51836ea1d4a84bb8580daee549d30, type: 3}
+    - target: {fileID: 7875939860460058523, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8931144830760567302, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
-      propertyPath: wallLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1845899957}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8317,9 +8349,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7536127186266737781, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
   m_PrefabInstance: {fileID: 1547832542}
   m_PrefabAsset: {fileID: 0}
---- !u!61 &1845899950 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 4224410107797756362, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
+--- !u!95 &1845899957 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7080098788295287910, guid: 55e7d4dc129667946a714790d64a8217, type: 3}
   m_PrefabInstance: {fileID: 1547832542}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1849383597
