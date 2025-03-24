@@ -3,19 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Enemy
-  - Door
-  - Speed
-  - Damage
-  - Health
-  - Shield
-  - Familiar
-  - Item
-  - Bullet
-  - RandomSmallObjects
-  - RandomLargeObjects
-  - Wall
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -24,12 +12,12 @@ TagManager:
   - Water
   - UI
   - groundLayer
-  - Pits
-  - Walls
-  - BIG Stones
-  - Enemy
+  - 
+  - 
+  - 
+  - 
   - Player
-  - SuperUI
+  - 
   - 
   - 
   - 

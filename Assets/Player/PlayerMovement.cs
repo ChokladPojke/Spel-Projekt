@@ -5,6 +5,9 @@ public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
     public float speed = 8f;
+    public float acceleration = 20f;
+    public float deceleration = 25f;
+    public float velocityPower = 0.9f;
     public float jumpingPower = 16f;
     private bool canDoubleJump = false;
     private bool isFacingRight = true;
@@ -16,46 +19,101 @@ public class PlayerMovement : MonoBehaviour
     public float dashingTime = 0.2f;
     public float dashingCooldown = 1f;
 
-    [SerializeField] private Rigidbody2D rb;
+    private bool isWallSliding = false;
+    private bool isWallJumping = false;
+    public float wallSlideSpeed = 2f;
+    public float wallJumpXForce = 10f;
+    public float wallJumpYForce = 14f;
+    public float wallJumpLockTime = 0.2f;
+
+    private bool isSliding = false;
+    public float slideSpeed = 20f;  // Initial slide speed boost
+    public float slideDecayRate = 0.95f; // How quickly slide slows down
+    public float slideJumpBoost = 1.5f; // Jump boost multiplier if jumping early in slide
+    private float currentSlideSpeed;
+
+    
     [SerializeField] private BoxCollider2D groundCheckCollider;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private BoxCollider2D wallCheckCollider;
-    [SerializeField] private TrailRenderer tr;
+    [SerializeField] private BoxCollider2D wallCheckColliderLeft;
+    [SerializeField] private BoxCollider2D wallCheckColliderRight;
+    private Rigidbody2D rb;
+    private TrailRenderer tr;
+    private SpriteRenderer spriteRenderer; 
+    private Animator animator;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        tr = GetComponent<TrailRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
         if (isDashing)
-        {
             return;
-        }
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        // Grounded Jump
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        // Handle Sliding
+        if (Input.GetKeyDown(KeyCode.S) && IsGrounded() && Mathf.Abs(horizontal) > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        }
-        // Wall Jump
-        else if (Input.GetButtonDown("Jump") && CanWallJump())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        }
-        // Double Jump (Only allowed if not grounded)
-        else if (Input.GetButtonDown("Jump") && !IsGrounded() && canDoubleJump)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-            canDoubleJump = false; // Consume double jump
+            StartSlide();
         }
 
-        // Reduce the jump height when the jump button is released
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            StopSlide();
+        }
+
+        // Wall Sliding Logic
+        if (IsTouchingWall() && !IsGrounded() && rb.velocity.y < 0)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, -wallSlideSpeed);
+        }
+        else if (isWallSliding && horizontal != 0)
+        {
+            isWallSliding = false;
+        }
+
+        // Jumping Logic
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (IsGrounded())
+            {
+                if (isSliding && currentSlideSpeed > slideSpeed * 0.8f) // Boost jump if early in slide
+                {
+                    rb.velocity = new Vector2(rb.velocity.x * slideJumpBoost, jumpingPower);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                }
+                StopSlide();
+            }
+            else if (isWallSliding)
+            {
+                StartCoroutine(WallJump());
+            }
+            else if (canDoubleJump)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                canDoubleJump = false;
+            }
+            animator.SetTrigger("isJumping");
+        }
+
+        // Reduce the jump height when releasing the button
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
-        // Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !hasDashed)
+        // Dash (Disabled when wall sliding)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !hasDashed && !isWallSliding)
         {
             StartCoroutine(Dash());
         }
@@ -64,25 +122,69 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             hasDashed = false;
-            canDoubleJump = true; // Reset double jump when landing
+            canDoubleJump = true;
+            isWallSliding = false;
         }
 
-        Flip();
+        if (!isWallJumping)
+        {
+            Flip();
+        }
     }
 
     private void FixedUpdate()
     {
-        if (isDashing)
-        {
+        if (isDashing || isSliding)
             return;
-        }
 
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        if (!isWallJumping)
+        {
+            ApplyAcceleration();
+        }
     }
 
-    private bool CanWallJump()
+    private void ApplyAcceleration()
     {
-        return wallCheckCollider.IsTouchingLayers(groundLayer) && !IsGrounded();
+        float targetSpeed = horizontal * speed;
+        float speedDifference = targetSpeed - rb.velocity.x;
+        float accelerationRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+
+        float movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelerationRate, velocityPower) * Mathf.Sign(speedDifference);
+        rb.AddForce(Vector2.right * movement, ForceMode2D.Force);
+    }
+
+    private void StartSlide()
+    {
+        animator.SetTrigger("Slide");
+        tr.emitting = true;
+        isSliding = true;
+        currentSlideSpeed = slideSpeed * (isFacingRight ? 1 : -1);
+        rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
+    }
+
+    private void StopSlide()
+    {
+        isSliding = false;
+        tr.emitting = false;
+    }
+
+    private void FixedUpdateSlide()
+    {
+        if (isSliding)
+        {
+            currentSlideSpeed *= slideDecayRate;
+            rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
+
+            if (Mathf.Abs(currentSlideSpeed) < 2f) // Stop slide when speed is too low
+            {
+                StopSlide();
+            }
+        }
+    }
+
+    private bool IsTouchingWall()
+    {
+        return wallCheckColliderLeft.IsTouchingLayers(groundLayer) || wallCheckColliderRight.IsTouchingLayers(groundLayer);
     }
 
     private bool IsGrounded()
@@ -92,13 +194,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Flip()
     {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
         {
-            Vector3 localScale = transform.localScale;
             isFacingRight = !isFacingRight;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
+            spriteRenderer.flipX = !spriteRenderer.flipX;
         }
+    }
+
+    private IEnumerator WallJump()
+    {
+        isWallSliding = false;
+        isWallJumping = true;
+
+        float jumpDirection = wallCheckColliderLeft.IsTouchingLayers(groundLayer) ? 1 : -1;
+        rb.velocity = new Vector2(jumpDirection * wallJumpXForce, wallJumpYForce);
+
+        yield return new WaitForSeconds(wallJumpLockTime);
+
+        isWallJumping = false;
     }
 
     private IEnumerator Dash()
@@ -109,11 +222,13 @@ public class PlayerMovement : MonoBehaviour
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+
+        float dashDirection = isFacingRight ? 1f : -1f;
+        rb.velocity = new Vector2(dashDirection * dashingPower, 0f);
         tr.emitting = true;
 
         yield return new WaitForSeconds(dashingTime);
-        
+
         tr.emitting = false;
         rb.gravityScale = originalGravity;
         isDashing = false;
