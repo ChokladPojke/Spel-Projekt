@@ -32,11 +32,14 @@ public class PlayerMovement : MonoBehaviour
     public float slideJumpBoost = 1.5f; // Jump boost multiplier if jumping early in slide
     private float currentSlideSpeed;
 
+    public GameObject deathParticlesPrefab; // Drag the prefab here in the Inspector
+
     
     [SerializeField] private BoxCollider2D groundCheckCollider;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private BoxCollider2D wallCheckColliderLeft;
     [SerializeField] private BoxCollider2D wallCheckColliderRight;
+    private CircleCollider2D playerCollider;
     private Rigidbody2D rb;
     private TrailRenderer tr;
     private SpriteRenderer spriteRenderer; 
@@ -44,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        playerCollider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -140,6 +144,22 @@ public class PlayerMovement : MonoBehaviour
         if (!isWallJumping)
         {
             ApplyAcceleration();
+        }
+    }
+
+        IEnumerator DieCoroutine()
+    {
+        Instantiate(deathParticlesPrefab, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(0.2f); // Let the particles spawn properly
+        Destroy(gameObject);
+    }
+
+
+    void OnTriggerEnter2D(Collider2D playerCollider)
+    {
+        if (playerCollider.CompareTag("Spike"))
+        {
+            Destroy(gameObject);
         }
     }
 
