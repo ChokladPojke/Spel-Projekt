@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
                 canDoubleJump = false;
             }
-            animator.SetTrigger("isJumping");
+            animator.SetBool("isJumping", true);
         }
 
         // Reduce the jump height when releasing the button
@@ -138,6 +138,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("yVelocity", rb.velocity.y);
+
         if (isDashing || isSliding)
             return;
 
@@ -175,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartSlide()
     {
-        animator.SetTrigger("Slide");
+        animator.SetBool("Slide", true);
         tr.emitting = true;
         isSliding = true;
         currentSlideSpeed = slideSpeed * (isFacingRight ? 1 : -1);
@@ -184,6 +187,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StopSlide()
     {
+        animator.SetBool("Slide", false);
         isSliding = false;
         tr.emitting = false;
     }
@@ -236,6 +240,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        animator.SetBool("Slide", true);
         canDash = false;
         isDashing = true;
         hasDashed = true;
@@ -255,5 +260,10 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
+    }
+
+    private void StopJumping()
+    {
+        animator.SetBool("isJumping", false);
     }
 }
