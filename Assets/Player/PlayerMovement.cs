@@ -56,6 +56,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        // Reset abilities when touching the ground
+        if (IsGrounded())
+        {
+            animator.SetBool("isJumping", false);
+            hasDashed = false;
+            canDoubleJump = true;
+            isWallSliding = false;
+        }
+
         if (isDashing)
             return;
 
@@ -122,14 +131,6 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-        // Reset abilities when touching the ground
-        if (IsGrounded())
-        {
-            hasDashed = false;
-            canDoubleJump = true;
-            isWallSliding = false;
-        }
-
         if (!isWallJumping)
         {
             Flip();
@@ -150,19 +151,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-        IEnumerator DieCoroutine()
+    public void Die()
     {
         Instantiate(deathParticlesPrefab, transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(0.2f); // Let the particles spawn properly
         Destroy(gameObject);
     }
-
 
     void OnTriggerEnter2D(Collider2D playerCollider)
     {
         if (playerCollider.CompareTag("Spike"))
         {
-            Destroy(gameObject);
+            Die();
         }
     }
 
@@ -178,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartSlide()
     {
-        animator.SetBool("Slide", true);
         tr.emitting = true;
         isSliding = true;
         currentSlideSpeed = slideSpeed * (isFacingRight ? 1 : -1);
@@ -187,24 +185,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void StopSlide()
     {
-        animator.SetBool("Slide", false);
         isSliding = false;
         tr.emitting = false;
     }
 
-    private void FixedUpdateSlide()
-    {
-        if (isSliding)
-        {
-            currentSlideSpeed *= slideDecayRate;
-            rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
+    // private void FixedUpdateSlide()
+    // {
+    //     if (isSliding)
+    //     {
+    //         currentSlideSpeed *= slideDecayRate;
+    //         rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
 
-            if (Mathf.Abs(currentSlideSpeed) < 2f) // Stop slide when speed is too low
-            {
-                StopSlide();
-            }
-        }
-    }
+    //         if (Mathf.Abs(currentSlideSpeed) < 2f) // Stop slide when speed is too low
+    //         {
+    //             StopSlide();
+    //         }
+    //     }
+    // }
 
     private bool IsTouchingWall()
     {
@@ -240,7 +237,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        animator.SetBool("Slide", true);
         canDash = false;
         isDashing = true;
         hasDashed = true;
@@ -260,10 +256,5 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
-    }
-
-    private void StopJumping()
-    {
-        animator.SetBool("isJumping", false);
     }
 }
