@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private float currentSlideSpeed;
 
     public GameObject deathParticlesPrefab; // Drag the prefab here in the Inspector
+    public GameManager gameManager;
 
     
     [SerializeField] private BoxCollider2D groundCheckCollider;
@@ -47,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerCollider = GetComponent<CircleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
@@ -153,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
+        gameManager.Deathscreen();
         Instantiate(deathParticlesPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
