@@ -6,42 +6,46 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public GameObject DeathScreen;
+    public GameObject DeathScreenUI;
+    public GameObject PauseMenuUI;
 
     private void Update()
     {
-        // if(gameMenuUI.activeSelf == false){
-        //     optionsScreenUI.SetActive(false);
-        //     gamemenuScreenUI.SetActive(true);
+        // if (PauseMenuUI.activeSelf){
+        //     Time.timeScale = 0f;
+        // }
+        // else{
+        //     Time.timeScale = 1f;
         // }
     }
-    //GameMenu
-    // public void GameMenu()
-    // {
-    //     if(gameMenuUI.activeSelf || DeathScreen.activeSelf || levelUpUI.activeSelf || victoryUI.activeSelf){
-    //         gameMenuUI.SetActive(false);
-    //     }else{
-    //         gameMenuUI.SetActive(true);
-    //     }
-    // }
+    public void PauseMenu()
+    {
+        if(PauseMenuUI.activeSelf || DeathScreenUI.activeSelf)
+        {
+            PauseMenuUI.SetActive(false);
+        }
+        else
+        {
+            PauseMenuUI.SetActive(true);
+        }
+    }
 
     public void Deathscreen()
     {
-        DeathScreen.SetActive(true);
+        DeathScreenUI.SetActive(true);
     }
     
     public void RestartGame()
     {
-        DeathScreen.SetActive(false);
+        DeathScreenUI.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LoadMainMenu()
     {
-        DeathScreen.SetActive(false);
+        DeathScreenUI.SetActive(false);
         SceneManager.LoadScene("Main Menu");
     }
-
 
     public void QuitGame()
     {

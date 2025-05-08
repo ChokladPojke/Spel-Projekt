@@ -58,6 +58,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.PauseMenu();
+        }
         // Reset abilities when touching the ground
         if (IsGrounded())
         {
@@ -146,7 +150,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (isDashing || isSliding)
             return;
-
         if (!isWallJumping)
         {
             ApplyAcceleration();
@@ -192,19 +195,19 @@ public class PlayerMovement : MonoBehaviour
         tr.emitting = false;
     }
 
-    // private void FixedUpdateSlide()
-    // {
-    //     if (isSliding)
-    //     {
-    //         currentSlideSpeed *= slideDecayRate;
-    //         rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
+    private void FixedUpdateSlide()
+    {
+        if (isSliding)
+        {
+            currentSlideSpeed *= slideDecayRate;
+            rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
 
-    //         if (Mathf.Abs(currentSlideSpeed) < 2f) // Stop slide when speed is too low
-    //         {
-    //             StopSlide();
-    //         }
-    //     }
-    // }
+            if (Mathf.Abs(currentSlideSpeed) < 2f) // Stop slide when speed is too low
+            {
+                StopSlide();
+            }
+        }
+    }
 
     private bool IsTouchingWall()
     {

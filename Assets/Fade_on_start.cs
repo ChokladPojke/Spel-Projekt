@@ -13,6 +13,7 @@ public class Fade_on_start : MonoBehaviour
     public float startAlpha;
     public bool hasText;
     public float maxAlpha = 1f;
+    public bool fadeOut;
 
     // Start is called before the first frame update
     void OnEnable(){   
@@ -26,21 +27,29 @@ public class Fade_on_start : MonoBehaviour
             hasImage = true;
             color = image.color;
         }
-        StartCoroutine(nameof(fadeIn));        
+        StartCoroutine(nameof(fade));        
     }
 
-    public IEnumerator fadeIn(){
+    public IEnumerator fade(){
         float currentalpha = startAlpha;
         //Color REALcolor = new Color(color.r, color.g, color.b, startAlpha);
         while (true){
-            currentalpha += Time.deltaTime;
+            if(fadeOut){
+                currentalpha -= Time.deltaTime;
+            }
+            else{
+                currentalpha += Time.deltaTime;
+            }
             if(hasText){
                 text.color = new Color(color.r, color.g, color.b, currentalpha);
             }
             if(hasImage){
                 image.color = new Color(color.r, color.g, color.b, currentalpha);
             }
-            if(currentalpha >= maxAlpha){
+            if(fadeOut == false && currentalpha >= maxAlpha){
+                break;
+            }
+            else if(fadeOut == true && currentalpha <= 0){
                 break;
             }
             yield return null;
