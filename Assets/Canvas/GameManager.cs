@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // if (PauseMenuUI.activeSelf){
-        //     Time.timeScale = 0f;
-        // }
-        // else{
-        //     Time.timeScale = 1f;
-        // }
+        if (PauseMenuUI.activeSelf){
+            Time.timeScale = 0f;
+        }
+        else{
+            Time.timeScale = 1f;
+        }
     }
     public void PauseMenu()
     {

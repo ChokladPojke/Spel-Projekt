@@ -1,49 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &52597748013726552
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6188399655282843071}
-  - component: {fileID: 568053804038023275}
-  m_Layer: 0
-  m_Name: Playermanager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6188399655282843071
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52597748013726552}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1476.9231, y: 830.7692, z: 0}
-  m_LocalScale: {x: 1.5384616, y: 1.5384616, z: 1.5384616}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7536127186266737781}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &568053804038023275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52597748013726552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a3a9276f9ef1d46b553b932ed0320e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1689594752083418695
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,8 +37,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6188399655282843071}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7080098788295287910
@@ -334,10 +289,11 @@ MonoBehaviour:
   wallJumpXForce: 10
   wallJumpYForce: 10
   wallJumpLockTime: 0.2
-  slideSpeed: 17.5
-  slideDecayRate: 0.95
+  slideSpeed: 20
+  slideDecayRate: 0.97
   slideJumpBoost: 2
   deathParticlesPrefab: {fileID: 5225591855030723864, guid: c526df8ed7f1dad4aa6c6325b80f9b0b, type: 3}
+  gameManager: {fileID: 0}
   groundCheckCollider: {fileID: 1110844443064399394}
   groundLayer:
     serializedVersion: 2

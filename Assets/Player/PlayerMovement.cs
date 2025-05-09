@@ -62,6 +62,12 @@ public class PlayerMovement : MonoBehaviour
         {
             gameManager.PauseMenu();
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            gameManager.RestartGame();
+        }
+        if (Time.timeScale == 0f)
+            return; // Skip update if game is paused
         // Reset abilities when touching the ground
         if (IsGrounded())
         {
@@ -101,16 +107,20 @@ public class PlayerMovement : MonoBehaviour
         // Jumping Logic
         if (Input.GetButtonDown("Jump"))
         {
+            
             if (IsGrounded())
             {
-                if (isSliding && currentSlideSpeed > slideSpeed * 0.8f) // Boost jump if early in slide
+                if (isSliding && Mathf.Abs(currentSlideSpeed) > slideSpeed * 0.75f)
                 {
-                    rb.velocity = new Vector2(rb.velocity.x * slideJumpBoost, jumpingPower);
+                    float direction = Mathf.Sign(currentSlideSpeed);
+                    float boostedSpeed = slideSpeed * slideJumpBoost; // Always use base slideSpeed
+                    rb.velocity = new Vector2(direction * boostedSpeed, jumpingPower);
                 }
                 else
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
                 }
+                
                 StopSlide();
             }
             else if (isWallSliding)
@@ -145,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        FixedUpdateSlide();
         animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("yVelocity", rb.velocity.y);
 
@@ -185,9 +196,12 @@ public class PlayerMovement : MonoBehaviour
     {
         tr.emitting = true;
         isSliding = true;
-        currentSlideSpeed = slideSpeed * (isFacingRight ? 1 : -1);
+
+        float direction = Mathf.Sign(horizontal);
+        currentSlideSpeed = slideSpeed * direction;
         rb.velocity = new Vector2(currentSlideSpeed, rb.velocity.y);
     }
+
 
     private void StopSlide()
     {

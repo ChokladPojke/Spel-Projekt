@@ -35,10 +35,10 @@ public class Fade_on_start : MonoBehaviour
         //Color REALcolor = new Color(color.r, color.g, color.b, startAlpha);
         while (true){
             if(fadeOut){
-                currentalpha -= Time.deltaTime;
+                currentalpha -= Time.unscaledDeltaTime;
             }
             else{
-                currentalpha += Time.deltaTime;
+                currentalpha += Time.unscaledDeltaTime;
             }
             if(hasText){
                 text.color = new Color(color.r, color.g, color.b, currentalpha);
