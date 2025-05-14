@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -10,11 +13,35 @@ public class MainMenuScript : MonoBehaviour
     public GameObject mainUI;
     public GameObject optionsUI;
     public GameObject levelsUI;
-    public int selectedLevel;
-    
-    public void LevelSelect()
+
+    public void Start()
     {
-        SceneManager.LoadScene("Level "+selectedLevel);
+        Time.timeScale = 1;
+    }
+
+    public void Level1()
+    {
+        SceneManager.LoadScene("Level 1");
+    }
+    
+    public void Level2()
+    {
+        SceneManager.LoadScene("Level 2");
+    }
+
+    public void Level3()
+    {
+        SceneManager.LoadScene("Level 3");
+    }
+
+    public void Level4()
+    {
+        SceneManager.LoadScene("Level 4");
+    }
+
+    public void Level5()
+    {
+        SceneManager.LoadScene("Level 5");
     }
 
     public void LevelsMenu()
@@ -31,7 +58,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        EditorApplication.isPlaying = false;
     }
 
 }

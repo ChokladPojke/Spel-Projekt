@@ -146,10 +146,10 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
-
-        if (!isWallJumping)
+        if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
         {
-            Flip();
+            isFacingRight = !isFacingRight;
+            spriteRenderer.flipX = !spriteRenderer.flipX;
         }
     }
 
@@ -179,6 +179,10 @@ public class PlayerMovement : MonoBehaviour
         if (playerCollider.CompareTag("Spike"))
         {
             Die();
+        }
+        if (playerCollider.CompareTag("Flag"))
+        {
+            gameManager.VictoryMenu();
         }
     }
 
@@ -231,15 +235,6 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         return groundCheckCollider.IsTouchingLayers(groundLayer);
-    }
-
-    private void Flip()
-    {
-        if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
-        {
-            isFacingRight = !isFacingRight;
-            spriteRenderer.flipX = !spriteRenderer.flipX;
-        }
     }
 
     private IEnumerator WallJump()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,19 +9,29 @@ public class GameManager : MonoBehaviour
 
     public GameObject DeathScreenUI;
     public GameObject PauseMenuUI;
+    public GameObject victoryMenuUI;
+    public float timer = 0;
 
     private void Update()
     {
-        if (PauseMenuUI.activeSelf){
+        timer += Time.deltaTime;
+        print(timer);
+        if (PauseMenuUI.activeSelf || victoryMenuUI.activeSelf){
             Time.timeScale = 0f;
         }
         else{
             Time.timeScale = 1f;
         }
     }
+
+    public void VictoryMenu()
+    {
+        victoryMenuUI.SetActive(true);
+    }
+
     public void PauseMenu()
     {
-        if(PauseMenuUI.activeSelf || DeathScreenUI.activeSelf)
+        if(PauseMenuUI.activeSelf || DeathScreenUI.activeSelf || victoryMenuUI.activeSelf)
         {
             PauseMenuUI.SetActive(false);
         }
@@ -37,19 +48,37 @@ public class GameManager : MonoBehaviour
     
     public void RestartGame()
     {
-        DeathScreenUI.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LoadMainMenu()
     {
-        DeathScreenUI.SetActive(false);
         SceneManager.LoadScene("Main Menu");
     }
 
-    public void QuitGame()
+    public void Level1()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Level 1");
     }
+    
+    public void Level2()
+    {
+        SceneManager.LoadScene("Level 2");
+    }
+
+    public void Level3()
+    {
+        SceneManager.LoadScene("Level 3");
+    }
+
+    public void Level4()
+    {
+        SceneManager.LoadScene("Level 4");
+    }
+
+    public void Level5()
+    {
+        SceneManager.LoadScene("Level 5");
+    }   
 
 }
