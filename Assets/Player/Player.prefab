@@ -292,6 +292,8 @@ MonoBehaviour:
   slideSpeed: 20
   slideDecayRate: 0.97
   slideJumpBoost: 2
+  slideCooldown: 0.5
+  slideTimer: 0.5
   deathParticlesPrefab: {fileID: 5225591855030723864, guid: c526df8ed7f1dad4aa6c6325b80f9b0b, type: 3}
   gameManager: {fileID: 0}
   groundCheckCollider: {fileID: 1110844443064399394}

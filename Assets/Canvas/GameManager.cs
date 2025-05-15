@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class GameManager : MonoBehaviour
     public GameObject DeathScreenUI;
     public GameObject PauseMenuUI;
     public GameObject victoryMenuUI;
+    public TextMeshProUGUI timerText;
     public float timer = 0;
+
 
     private void Update()
     {
         timer += Time.deltaTime;
-        print(timer);
+        timerText.text = timer.ToString("F2")+"s";
         if (PauseMenuUI.activeSelf || victoryMenuUI.activeSelf){
             Time.timeScale = 0f;
         }

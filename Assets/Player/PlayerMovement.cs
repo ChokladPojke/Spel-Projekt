@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     public float slideDecayRate = 0.95f; // How quickly slide slows down
     public float slideJumpBoost = 1.5f; // Jump boost multiplier if jumping early in slide
     private float currentSlideSpeed;
+    public float slideCooldown = 2;
+    public float slideTimer = 2;
 
     public GameObject deathParticlesPrefab; // Drag the prefab here in the Inspector
     public GameManager gameManager;
@@ -43,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private CircleCollider2D playerCollider;
     private Rigidbody2D rb;
     private TrailRenderer tr;
-    private SpriteRenderer spriteRenderer; 
+    private SpriteRenderer spriteRenderer;
     private Animator animator;
 
     private void Start()
@@ -82,8 +84,13 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        if (slideTimer < slideCooldown)
+        {
+            slideTimer += Time.deltaTime;
+        }
+
         // Handle Sliding
-        if (Input.GetKeyDown(KeyCode.S) && IsGrounded() && Mathf.Abs(horizontal) > 0)
+        if (Input.GetKeyDown(KeyCode.S) && slideTimer >= slideCooldown && IsGrounded() && Mathf.Abs(horizontal) > 0)
         {
             StartSlide();
         }
@@ -198,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartSlide()
     {
+        slideTimer = 0;
         tr.emitting = true;
         isSliding = true;
 
