@@ -60,13 +60,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Check if the game is paused
+       if (Input.GetKeyDown(KeyCode.Escape))
         {
             gameManager.PauseMenu();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            gameManager.RestartGame();
         }
         if (Time.timeScale == 0f)
             return; // Skip update if game is paused

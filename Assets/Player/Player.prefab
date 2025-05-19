@@ -289,7 +289,7 @@ MonoBehaviour:
   wallJumpXForce: 10
   wallJumpYForce: 10
   wallJumpLockTime: 0.2
-  slideSpeed: 20
+  slideSpeed: 22.5
   slideDecayRate: 0.97
   slideJumpBoost: 2
   slideCooldown: 0.5

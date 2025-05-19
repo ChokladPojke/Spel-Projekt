@@ -8,18 +8,29 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
 
-    public GameObject DeathScreenUI;
-    public GameObject PauseMenuUI;
+    public GameObject deathMenuUI;
+    public GameObject pauseMenuUI;
     public GameObject victoryMenuUI;
     public TextMeshProUGUI timerText;
     public float timer = 0;
 
+    public void Start()
+    {
+        deathMenuUI = transform.Find("DeathScreen").gameObject;
+        pauseMenuUI = transform.Find("PauseScreen").gameObject;
+        victoryMenuUI = transform.Find("VictoryScreen").gameObject;
+        timerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
+    }
 
     private void Update()
     {
+       if (Input.GetKeyDown(KeyCode.R))
+        {
+            RestartGame();
+        }
         timer += Time.deltaTime;
         timerText.text = timer.ToString("F2")+"s";
-        if (PauseMenuUI.activeSelf || victoryMenuUI.activeSelf){
+        if (pauseMenuUI.activeSelf || victoryMenuUI.activeSelf){
             Time.timeScale = 0f;
         }
         else{
@@ -34,19 +45,19 @@ public class GameManager : MonoBehaviour
 
     public void PauseMenu()
     {
-        if(PauseMenuUI.activeSelf || DeathScreenUI.activeSelf || victoryMenuUI.activeSelf)
+        if(pauseMenuUI.activeSelf || deathMenuUI.activeSelf || victoryMenuUI.activeSelf)
         {
-            PauseMenuUI.SetActive(false);
+            pauseMenuUI.SetActive(false);
         }
         else
         {
-            PauseMenuUI.SetActive(true);
+            pauseMenuUI.SetActive(true);
         }
     }
 
     public void Deathscreen()
     {
-        DeathScreenUI.SetActive(true);
+        deathMenuUI.SetActive(true);
     }
     
     public void RestartGame()
