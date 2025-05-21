@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 
 
 public class MainMenuScript : MonoBehaviour
@@ -59,7 +54,7 @@ public class MainMenuScript : MonoBehaviour
     // Forcing the game to quit
     public void QuitGame()
     {
-        EditorApplication.isPlaying = false;
+        // EditorApplication.isPlaying = false;
     }
 
 }
