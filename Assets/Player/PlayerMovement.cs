@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canDash = true;
     private bool isDashing;
-    private bool hasDashed = false;
+    private bool hasDashed = false; // Track if the player has dashed that resets on ground touch
     public float dashingPower = 24f;
     public float dashingTime = 0.2f;
     public float dashingCooldown = 1f;
@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public float slideCooldown = 2;
     public float slideTimer = 2;
 
-    public GameObject deathParticlesPrefab; // Drag the prefab here in the Inspector
+    public GameObject deathParticlesPrefab;
     public GameManager gameManager;
 
     
@@ -67,7 +67,8 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Time.timeScale == 0f)
             return; // Skip update if game is paused
-        // Reset abilities when touching the ground
+
+        // Reset abilities and animations when touching the ground
         if (IsGrounded())
         {
             animator.SetBool("isJumping", false);
@@ -75,12 +76,12 @@ public class PlayerMovement : MonoBehaviour
             canDoubleJump = true;
             isWallSliding = false;
         }
-
         if (isDashing)
             return;
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        // Handle Sliding Timer
         if (slideTimer < slideCooldown)
         {
             slideTimer += Time.deltaTime;
@@ -91,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartSlide();
         }
-
+        // Stop sliding when the player releases the S key
         if (Input.GetKeyUp(KeyCode.S))
         {
             StopSlide();
@@ -114,17 +115,16 @@ public class PlayerMovement : MonoBehaviour
             
             if (IsGrounded())
             {
-                if (isSliding && Mathf.Abs(currentSlideSpeed) > slideSpeed * 0.75f)
+                if (isSliding && Mathf.Abs(currentSlideSpeed) > slideSpeed * 0.75f) // Check if the slide speed is high enough
                 {
                     float direction = Mathf.Sign(currentSlideSpeed);
                     float boostedSpeed = slideSpeed * slideJumpBoost; // Always use base slideSpeed
-                    rb.velocity = new Vector2(direction * boostedSpeed, jumpingPower);
+                    rb.velocity = new Vector2(direction * boostedSpeed, jumpingPower); // Jump with boost
                 }
                 else
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
                 }
-                
                 StopSlide();
             }
             else if (isWallSliding)
@@ -145,11 +145,12 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
-        // Dash (Disabled when wall sliding)
+        // Dash (Disabled when wall sliding and if the player has already dashed without touching the ground)
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !hasDashed && !isWallSliding)
         {
             StartCoroutine(Dash());
         }
+        // determine the direction the player is facing
         if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
         {
             isFacingRight = !isFacingRight;
@@ -160,9 +161,12 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         FixedUpdateSlide();
+        // Determine if the player is moving
+        // and set the animator parameters
         animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("yVelocity", rb.velocity.y);
 
+        // Apply acceleration and deceleration
         if (isDashing || isSliding)
             return;
         if (!isWallJumping)
@@ -171,6 +175,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Function to call when the player dies i.e. when the player touches a spike
+    // Call the Deathscreen function from the GameManager
+    // and spawn death particles
     public void Die()
     {
         gameManager.Deathscreen();
@@ -178,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // When the player collides with a spike or a flag call a funktion (Die or VictoryMenu)
     void OnTriggerEnter2D(Collider2D playerCollider)
     {
         if (playerCollider.CompareTag("Spike"))
@@ -190,16 +198,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Changes the movement of the player to a accelerate or decelerate
     private void ApplyAcceleration()
     {
         float targetSpeed = horizontal * speed;
         float speedDifference = targetSpeed - rb.velocity.x;
         float accelerationRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
 
-        float movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelerationRate, velocityPower) * Mathf.Sign(speedDifference);
-        rb.AddForce(Vector2.right * movement, ForceMode2D.Force);
+        float movement = Mathf.Pow(Mathf.Abs(speedDifference) * accelerationRate, velocityPower) * Mathf.Sign(speedDifference); // Calculate the movement force
+        rb.AddForce(Vector2.right * movement, ForceMode2D.Force); // Apply the force to the Rigidbody2D
     }
 
+    // Function to call when the player starts sliding
     private void StartSlide()
     {
         slideTimer = 0;
@@ -218,6 +228,8 @@ public class PlayerMovement : MonoBehaviour
         tr.emitting = false;
     }
 
+    // Determine the decay of the slide speed
+    // and stop the slide when the speed is too low
     private void FixedUpdateSlide()
     {
         if (isSliding)
@@ -232,16 +244,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Check if the player is touching a wall
+    // and if the player is not grounded
     private bool IsTouchingWall()
     {
         return wallCheckColliderLeft.IsTouchingLayers(groundLayer) || wallCheckColliderRight.IsTouchingLayers(groundLayer);
     }
 
+    // Check if the player is touching the ground
     private bool IsGrounded()
     {
         return groundCheckCollider.IsTouchingLayers(groundLayer);
     }
 
+    // Wall Jump Logic
     private IEnumerator WallJump()
     {
         isWallSliding = false;
@@ -250,11 +266,12 @@ public class PlayerMovement : MonoBehaviour
         float jumpDirection = wallCheckColliderLeft.IsTouchingLayers(groundLayer) ? 1 : -1;
         rb.velocity = new Vector2(jumpDirection * wallJumpXForce, wallJumpYForce);
 
-        yield return new WaitForSeconds(wallJumpLockTime);
+        yield return new WaitForSeconds(wallJumpLockTime); // Lock the wall jump for a short time
 
         isWallJumping = false;
     }
 
+    // Dash Logic
     private IEnumerator Dash()
     {
         canDash = false;
@@ -264,11 +281,11 @@ public class PlayerMovement : MonoBehaviour
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
-        float dashDirection = isFacingRight ? 1f : -1f;
+        float dashDirection = isFacingRight ? 1f : -1f; // Determine dash direction based on facing direction
         rb.velocity = new Vector2(dashDirection * dashingPower, 0f);
         tr.emitting = true;
 
-        yield return new WaitForSeconds(dashingTime);
+        yield return new WaitForSeconds(dashingTime); // Wait for the dash duration
 
         tr.emitting = false;
         rb.gravityScale = originalGravity;

@@ -56,6 +56,7 @@ public class MainMenuScript : MonoBehaviour
         optionsUI.SetActive(true);
     }
 
+    // Forcing the game to quit
     public void QuitGame()
     {
         EditorApplication.isPlaying = false;

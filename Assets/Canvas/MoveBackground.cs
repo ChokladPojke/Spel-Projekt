@@ -9,6 +9,8 @@ public class MoveBackground : MonoBehaviour {
 	public float destination;
 	public float original;
 
+	// Moves the background to the left
+	// and resets it to the original position
 	void Update(){
 		x = transform.position.x;
 		x += speed * Time.deltaTime;

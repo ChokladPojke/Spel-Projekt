@@ -15,7 +15,7 @@ public class Fade_on_start : MonoBehaviour
     public float maxAlpha = 1f;
     public bool fadeOut;
 
-    // Start is called before the first frame update
+    // Find the image or text component
     void OnEnable(){   
         if (GetComponent<TextMeshProUGUI>() != null){
             text = GetComponent<TextMeshProUGUI>();
@@ -29,15 +29,17 @@ public class Fade_on_start : MonoBehaviour
         }
         StartCoroutine(nameof(fade));        
     }
-
+    // Fade in or out
+    // depending on the value of fadeOut
     public IEnumerator fade(){
         float currentalpha = startAlpha;
-        //Color REALcolor = new Color(color.r, color.g, color.b, startAlpha);
         while (true){
-            if(fadeOut){
+            if (fadeOut)
+            {
                 currentalpha -= Time.unscaledDeltaTime;
             }
-            else{
+            else
+            {
                 currentalpha += Time.unscaledDeltaTime;
             }
             if(hasText){

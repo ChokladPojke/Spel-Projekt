@@ -24,28 +24,34 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        // Check if the player presses the r key to restart the game
        if (Input.GetKeyDown(KeyCode.R))
         {
             RestartGame();
         }
         timer += Time.deltaTime;
         timerText.text = timer.ToString("F2")+"s";
-        if (pauseMenuUI.activeSelf || victoryMenuUI.activeSelf){
+        // pause the game if the pause menu or victory menu is active
+        if (pauseMenuUI.activeSelf || victoryMenuUI.activeSelf)
+        {
             Time.timeScale = 0f;
         }
-        else{
+        else
+        {
             Time.timeScale = 1f;
         }
     }
 
+    // Function to call when the player wins
     public void VictoryMenu()
     {
         victoryMenuUI.SetActive(true);
     }
 
+    // Function to call when the player pauses the game
     public void PauseMenu()
     {
-        if(pauseMenuUI.activeSelf || deathMenuUI.activeSelf || victoryMenuUI.activeSelf)
+        if (pauseMenuUI.activeSelf || deathMenuUI.activeSelf || victoryMenuUI.activeSelf)
         {
             pauseMenuUI.SetActive(false);
         }
@@ -55,6 +61,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Function to call when the player dies
     public void Deathscreen()
     {
         deathMenuUI.SetActive(true);
